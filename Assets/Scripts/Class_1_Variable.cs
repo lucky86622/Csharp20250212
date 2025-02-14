@@ -6,8 +6,9 @@
 //引用Unity的函式庫(開發遊戲的程式集合，命名空間)
 using UnityEngine;
 
-//修飾詞 類別關鍵字(腳本) 類別名稱(腳本名稱)
-public class Class_1_Variable
+// 修飾詞 類別關鍵字(腳本) 類別名稱(腳本名稱)
+// 在腳本後面添加：MonoBehaviour 可以讓腳本掛在 Unity 的物件上
+public class Class_1_Variable : MonoBehaviour
 {
     // 程式內的括號都是成對出現 () [] {} <> '' ""
     // class {} 此類別的程式內容
@@ -17,10 +18,13 @@ public class Class_1_Variable
 
     // 變數語法：
     // 變數資料類型 變數名稱;
+    // 變數資料類型 變數名稱 指定 預設值; (指定 預設值 可省略)
     // 資料類型：告訴記憶體可以放入那些資料，例如：整數 int 可以放沒有小數點的數值
     // 變數名稱：習慣用小寫開頭命名，駝峰式命名，規則與腳本名稱相同
-    int coin;
-
+    // 公開：允許其他類別存取，顯示在屬性面板上 public 
+    // 私人：禁止其他類別存取，隱藏在屬性面板上 private (預設)
+    public int coin = 500;
+    private int level = 3;
 }
 
 // 類別外，不要將程式寫在這裡
