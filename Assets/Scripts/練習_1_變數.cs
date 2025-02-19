@@ -1,11 +1,11 @@
-using UnityEditor;
+ï»¿using UnityEditor;
 using UnityEngine;
 
 public class NewEmptyCSharpScript : MonoBehaviour
 {
     public short prise = 999;
     private float jumpHigh = 77.5f;
-    public string weapon = "¤T¶µ¤§¤O";
+    public string weapon = "ä¸‰é …ä¹‹åŠ›";
     private bool dragonSoul = true;
 
 }
