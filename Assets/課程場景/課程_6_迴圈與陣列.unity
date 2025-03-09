@@ -220,6 +220,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 553767516}
+  - component: {fileID: 553767517}
+  - component: {fileID: 553767518}
   m_Layer: 0
   m_Name: "\u8FF4\u5708\u8207\u9663\u5217"
   m_TagString: Untagged
@@ -242,6 +244,47 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &553767517
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 553767515}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 90ab7f45a4991484ba5e2af9e106fad2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &553767518
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 553767515}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4abd6050fd3764245ae8a2f2aaefd135, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  card1: "\u76AE\u5361\u4E18"
+  card2: "\u5C0F\u706B\u9F8D"
+  card3: "\u5361\u6BD4\u7378"
+  cards:
+  - "\u5999\u86D9\u7A2E\u5B50"
+  - "\u76AE\u4E18"
+  - "\u706B\u7130\u9CE5"
+  deck1:
+  - 
+  - 
+  - 
+  - 
+  - 
+  deck2:
+  - "\u6025\u51CD\u9CE5"
+  - "\u8CED\u971E"
+  - "\u5BF6\u77F3\u6D77\u661F"
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
