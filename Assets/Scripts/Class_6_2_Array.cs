@@ -49,6 +49,7 @@ public class Class_6_2_Array : MonoBehaviour
         Debug.Log($"<color=#f39>Deck2 的第三張卡片：{deck2[2]}</color>");
         #endregion
 
+        #region 二維與三維陣列
         // 存取二維陣列
         Debug.Log($"<color=#3f3>編號[0, 1]的道具：{inventory[0, 1]}</color>");
 
@@ -62,5 +63,17 @@ public class Class_6_2_Array : MonoBehaviour
         // 設定高級球為超級球
         shop[1, 0, 1] = "超級球";
         Debug.Log($"<color=#f3d>第二頁第一排第二個：{shop[1, 0, 1]}</color>");
+        #endregion
+
+        // 獲得陣列的長度或維度
+        // 一維 ~ 多維陣列的長度：陣列名稱.Length
+
+        Debug.Log($"<color=#f93>一維 - 牌組 2 的長度：{deck2.Length}</color>");
+        Debug.Log($"<color=#f93>二維 - 道具的長度：{inventory.Length}</color>");
+        Debug.Log($"<color=#f93>三維 - 商品的長度：{shop.Length}</color>");
+        // 陣列的維度：陣列名稱.Rank
+        Debug.Log($"<color=#f93>一維 - 牌組 2 的維度：{deck2.Rank}</color>");
+        Debug.Log($"<color=#f93>二維 - 道具的維度：{inventory.Rank}</color>");
+        Debug.Log($"<color=#f93>三維 - 商品的維度：{shop.Rank}</color>");
     }
 }
