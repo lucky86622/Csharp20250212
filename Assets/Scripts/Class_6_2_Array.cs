@@ -5,6 +5,7 @@
 /// </summary>
 public class Class_6_2_Array : MonoBehaviour
 {
+    #region 一 ~ 三維陣列
     // 不使用陣列的寫法：
     // 皮卡丘、小火龍、卡比獸
     public string card1 = "皮卡丘", card2 = "小火龍", card3 = "卡比獸";
@@ -30,6 +31,11 @@ public class Class_6_2_Array : MonoBehaviour
         //第二頁
         {{ "精靈球", "高級球" }, { "大師球", "巢穴球" } }
     };
+    #endregion
+
+    private int[][] numbers = new int[2][];
+
+    private int[][,] count = new int[2][,];
 
     private void Start()
     {
@@ -65,6 +71,7 @@ public class Class_6_2_Array : MonoBehaviour
         Debug.Log($"<color=#f3d>第二頁第一排第二個：{shop[1, 0, 1]}</color>");
         #endregion
 
+        #region 陣列長度與維度
         // 獲得陣列的長度或維度
         // 一維 ~ 多維陣列的長度：陣列名稱.Length
 
@@ -75,5 +82,23 @@ public class Class_6_2_Array : MonoBehaviour
         Debug.Log($"<color=#f93>一維 - 牌組 2 的維度：{deck2.Rank}</color>");
         Debug.Log($"<color=#f93>二維 - 道具的維度：{inventory.Rank}</color>");
         Debug.Log($"<color=#f93>三維 - 商品的維度：{shop.Rank}</color>");
+        #endregion
+
+        // 不規則陣列：基本練習
+        numbers[0] = new int[] { 1, 3, 5 };
+        numbers[1] = new int[] { 9, 8 };
+
+        // 取得數字 3 與 9
+        Debug.Log($"<color=#3ff>不規則陣列的數字 3 : {numbers[0][1]}</color>");
+        Debug.Log($"<color=#3ff>不規則陣列的數字 9 : {numbers[1][0]}</color>");
+
+        // 將 8 改成 6
+        numbers[1][1] = 6;
+        Debug.Log($"<color=#3ff>第二列的第二個 : {numbers[1][1]}</color>");
+
+        // 不規則陣列：包含多維陣列
+        count[0] = new int[,] { { 1, 1 }, { 1, 1 } };
+        count[1] = new int[,] { { 2, 2, 2 }, { 2, 2, 2 } };
+        Debug.Log($"<color=#3ff>count 第二列的[0, 0]：{count[1][0, 0]}</color>");
     }
 }
