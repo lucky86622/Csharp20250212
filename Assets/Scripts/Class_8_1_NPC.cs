@@ -14,20 +14,23 @@ public class Class_8_1_NPC
     {
         Debug.Log("<color=#f3d>預設建構子</color>");
     }
+    // 建構子的簡寫
+    public Class_8_1_NPC(string _name) => name = _name;
 
-    public Class_8_1_NPC(string _name)
+    public Class_8_1_NPC(string _name, string _dialogue)
     {
         name = _name;
+        dialogue = _dialogue;
         Debug.Log("<color=#f3d>有參數的建構子</color>");
     }
 
     public void Logname()
     {
-        Debug.Log($"<color=#373>NPC 的名稱：{name}</color>");
+        Debug.Log($"<color=#3f3>NPC 的名稱：{name}</color>");
     }
 
     public void Talk()
     {
-        Debug.Log($"<color=#373>{dialogue}</color>");
+        Debug.Log($"<color=#3f3>{dialogue}</color>");
     }
 }
