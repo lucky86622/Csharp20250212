@@ -1,5 +1,6 @@
 ﻿using BAG.Tools;
 using UnityEngine;
+using System;
 
 /// <summary>
 /// 資料類型轉換
@@ -49,5 +50,28 @@ public class Class_9_2_DataTypeSwitch : MonoBehaviour
         LogSystem.LogWithColor(byte4, "#f77");
 
         LogSystem.LogWithColor("----------------", "#ff3");
+    }
+
+    private void Start()
+    {
+        // 將整數轉為字串
+        int count = 99;
+        var intTostring = Convert.ToInt32(count);
+        LogSystem.LogWithColor(intTostring.GetType(), "#f96");
+        // 將布林值轉為字串
+        bool isOver = false;
+        var boolTostring = Convert.ToString(isOver);
+        LogSystem.LogWithColor(boolTostring.GetType(), "#f96");
+
+        float move = 3.5f;
+        var floatToByte = Convert.ToByte(move);
+        LogSystem.LogWithColor(floatToByte, "#f96");
+        LogSystem.LogWithColor(floatToByte.GetType(), "#f96");
+
+        // true = 1, false = 0
+        bool isGrounded = true;
+        var boolToByte = Convert.ToByte(isGrounded);
+        LogSystem.LogWithColor(boolToByte, "#6f6");
+        LogSystem.LogWithColor(boolToByte.GetType(), "#6f6");
     }
 }
