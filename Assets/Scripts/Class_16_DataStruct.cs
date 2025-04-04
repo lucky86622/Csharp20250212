@@ -16,7 +16,7 @@ public class Class_16_DataStruct : MonoBehaviour
     // 清單：泛型集合
     public List<int> speeds = new List<int>() { 3, 9, 7 };
     public List<string> props = new List<string>() { "藥水", "地圖" };
-    public List<float> playerDefens; 
+    public List<float> playerDefens;
     #endregion
 
     private void Awake()
@@ -83,9 +83,10 @@ public class Class_16_DataStruct : MonoBehaviour
         LogSystem.LogWithColor($"{enemys.Contains("哥布林")}", "#3f6");
         // 清除所有資料
         enemys.Clear();
-        LogStack<string>(enemys); 
+        LogStack<string>(enemys);
         #endregion
 
+        #region 佇列
         // Queue 佇列：先進先出，先放進來的資料先被拿出來 (回合遊戲的攻擊順序)
         Queue<string> player = new Queue<string>();
         player.Enqueue("盜賊");
@@ -98,6 +99,63 @@ public class Class_16_DataStruct : MonoBehaviour
         // 拿東西並刪除，與堆疊的 Pop 相同
         LogSystem.LogWithColor(player.Dequeue(), "#f33");
         LogQueue<string>(player);
+        #endregion
+
+        #region 鏈結串列
+        // LinkedList 鏈結串列
+        string[] skillsArray = new string[] { "衝浪", "攀瀑" };
+        LinkedList<string> skills = new LinkedList<string>(skillsArray);
+        LogLinkedList<string>(skills);
+        skills.AddLast("潛水");
+        LogLinkedList<string>(skills);
+        skills.AddFirst("潮漩");
+        LogLinkedList<string>(skills);
+
+        // 在衝浪後面添加一個怪力
+        LinkedListNode<string> skillWater = skills.Find("衝浪");
+        skills.AddAfter(skillWater, "怪力");
+        // 在衝浪前面添加一個飛翔
+        skills.AddBefore(skillWater, "飛翔");
+        LogLinkedList<string>(skills);
+        #endregion
+
+        #region 排序集合
+        // 自動排序並且不重複的集合 (由小到大排序)
+        SortedSet<int> counts = new SortedSet<int> { 9, 2, 80, 1 };
+        LogSortedSet<int>(counts);
+        counts.Add(77);
+        counts.Add(123);
+        counts.Add(9);
+        LogSortedSet<int>(counts);
+        LogSystem.LogWithColor($"最大：{counts.Max}", "#f33");
+        LogSystem.LogWithColor($"最小：{counts.Min}", "#f33");
+
+        SortedSet<int> lv = new SortedSet<int> { 7, 3, 75, 123, 5, 80 };
+        // 交集與差集
+        counts.IntersectWith(lv);
+        LogSortedSet<int>(counts);
+        counts.ExceptWith(lv);
+        LogSortedSet<int>(counts);
+        #endregion
+
+        #region 字典
+        Dictionary<int, string> deck = new Dictionary<int, string>()
+        {
+            {11, "奧西里斯之天空龍" }, {13, "太陽神之翼神龍"}, {12, "歐貝利斯克之巨神兵"}
+        };
+        LogDictionary<int, string>(deck);
+        deck.Add(7, "死者甦醒");
+        LogSystem.LogWithColor($"是否有編號 11 的資料：{deck.ContainsKey(11)}", "#f33");
+        LogSystem.LogWithColor($"是否有青眼白龍資料：{deck.ContainsValue("青眼白龍")}", "#f33"); 
+        #endregion
+
+        // 保持排序並且不會有重複的鍵
+        SortedList<string, int> board = new SortedList<string, int>();
+        board.Add("Yellow", 99);
+        board.Add("White", 85);
+        board.Add("Blue", 85);
+        // board.Add("Blue", 77);               // 重複的鍵導致錯誤
+        LogSortedList<string, int>(board);
     }
 
     private void LogStack<T>(Stack<T> stack)
@@ -116,5 +174,43 @@ public class Class_16_DataStruct : MonoBehaviour
         {
             LogSystem.LogWithColor($"佇列資料：{item}", "#7f7");
         }
+    }
+
+    private void LogLinkedList<T>(LinkedList<T> linkedList)
+    {
+        foreach (var item in linkedList)
+        {
+            LogSystem.LogWithColor(item, "#fa3");
+        }
+
+        LogSystem.LogWithColor("----------", "#fff");
+    }
+
+    private void LogSortedSet<T>(SortedSet<T> set)
+    {
+        foreach(var item in set)
+        {
+            LogSystem.LogWithColor(item, "#3f3");
+        }
+        LogSystem.LogWithColor("----------", "#fff");
+    }
+
+    private void LogDictionary<T, U>(Dictionary<T, U> dict)
+    {
+        foreach(var item in dict)
+        {
+            LogSystem.LogWithColor($"卡牌的編號：{item.Key}", "#3f3");
+            LogSystem.LogWithColor($"卡牌的名稱：{item.Value}", "#3f3");
+        }
+        LogSystem.LogWithColor("----------", "#fff");
+    }
+
+    private void LogSortedList<T, U>(SortedList<T, U> list)
+    {
+        foreach (var item in list)
+        {
+            LogSystem.LogWithColor($"{item.Key} 的分數 {item.Value}", "#77f");
+        }
+        LogSystem.LogWithColor("----------", "#fff");
     }
 }
