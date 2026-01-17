@@ -48,32 +48,12 @@ namespace Puzzle.Tetris
         #endregion
 
         #region 遊戲核心資料結構
-        /// <summary>
-        /// 磚塊模板
-        /// </summary>
-        public Brick brickTMP;
-
-        /// <summary>
-        /// 棋盤載體UI
-        /// </summary>
-        public Transform boardUI;
-
-        /// <summary>
-        /// 遊戲棋盤二維陣列(複數集合物件)
-        /// </summary>
-        private Brick[,] _gameBorad;
-
-        /// <summary>
-        /// 下個出現的方塊形狀
-        /// </summary>
-        private GameData.Type _nextBrickType;
-
-        /// <summary>
-        /// 當前操作中的方塊形狀
-        /// </summary>
-        private GameData.Type _currentBrickType;
+        public Brick brickTMP;          // 磚塊模板
+        public Transform boardUI;       // 棋盤載體UI
+        private Brick[,] _gameBorad;    // 遊戲棋盤二維陣列(複數集合物件)
         #endregion
 
+        #region 生命週期
         private void Start()
         {
             InitialGame();                  // 初始化遊戲
@@ -103,6 +83,14 @@ namespace Puzzle.Tetris
                 }
             }
         }
+        #endregion
+
+        #region 遊戲邏輯控制
+        private const int Spawn_X = 4;              // [常數]方塊出生座標 X
+        private const int Spawn_Y = 19;             // [常數]方塊出生座標 Y
+        private GameData.Type _nextBrickType;       // 下個出現的方塊形狀
+        private GameData.Type _currentBrickType;    // 當前操作中的方塊形狀
+        #endregion
     }
 }
 
