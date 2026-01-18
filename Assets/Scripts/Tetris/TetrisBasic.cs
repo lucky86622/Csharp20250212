@@ -7,14 +7,8 @@ namespace Puzzle.Tetris
     public class TetrisBasic : MonoBehaviour
     {
         #region 基礎資料
-        /// <summary>
-        /// [靜態]data資料物件實體
-        /// </summary>
-        private static GameData _data;
-        /// <summary>
-        /// [靜態]公開存取使用的data物件(唯讀)
-        /// </summary>
-        public static GameData data
+        private static GameData _data;  // [靜態]data資料物件實體
+        public static GameData data     // [靜態]公開存取使用的data物件(唯讀)
         {
             get
             {
@@ -26,25 +20,16 @@ namespace Puzzle.Tetris
                 return _data;
             }
         }
-        /// <summary>
-        /// 經由分數計算出來的遊戲等級
-        /// </summary>
-        private int _level
+        private int _level              // 經由分數計算出來的遊戲等級
         {
             get
             {
                 // 級距：1000
                 return _score / 1000;
             }
-        }
-        /// <summary>
-        /// 遊戲進行成績
-        /// </summary>
-        private int _score;
-        /// <summary>
-        /// 遊戲是否結束
-        /// </summary>
-        private bool _isGameOver;
+        }       
+        private int _score;             // 遊戲進行成績
+        private bool _isGameOver;       // 遊戲是否結束
         #endregion
 
         #region 遊戲核心資料結構
@@ -83,11 +68,22 @@ namespace Puzzle.Tetris
                 }
             }
         }
+
+        private void FixedUpdate()
+        {
+            _timeCounter++; // 計算畫面更新
+            if( _timeCounter >= counter_TH)
+            {
+                _timeCounter = 0;
+            }
+        }
         #endregion
 
         #region 遊戲邏輯控制
-        private const int Spawn_X = 4;              // [常數]方塊出生座標 X
-        private const int Spawn_Y = 19;             // [常數]方塊出生座標 Y
+        private const int spawn_X = 4;              // [常數]方塊出生座標 X
+        private const int spawn_Y = 19;             // [常數]方塊出生座標 Y
+        private const int counter_TH = 50;          // [常數]更新計數器
+        private int _timeCounter;                   
         private GameData.Type _nextBrickType;       // 下個出現的方塊形狀
         private GameData.Type _currentBrickType;    // 當前操作中的方塊形狀
         #endregion
