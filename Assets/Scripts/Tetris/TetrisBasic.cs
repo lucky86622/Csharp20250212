@@ -64,17 +64,22 @@ namespace Puzzle.Tetris
                     // 棋盤[指定的座標] = 具現化物件到特定座標
                     _gameBorad[x, y] = Instantiate(brickTMP, boardUI);
                     // 為了辨識容易將每個Brick依座標命名
-                    _gameBorad[x, y].name = $"Brick({x}, {y})";
+                    _gameBorad[x, y].Initial($"Brick({x}, {y})");
                 }
             }
         }
 
+        /// <summary>
+        /// 以每秒跳動50次的固定更新週期刷新畫面
+        /// </summary>
         private void FixedUpdate()
         {
             _timeCounter++; // 計算畫面更新
             if( _timeCounter >= counter_TH)
             {
                 _timeCounter = 0;
+                Debug.Log("畫面刷新");
+                DropBrick();
             }
         }
         #endregion
@@ -83,9 +88,15 @@ namespace Puzzle.Tetris
         private const int spawn_X = 4;              // [常數]方塊出生座標 X
         private const int spawn_Y = 19;             // [常數]方塊出生座標 Y
         private const int counter_TH = 50;          // [常數]更新計數器
-        private int _timeCounter;                   
+        private int _timeCounter;                   // 更新計數器
         private GameData.Type _nextBrickType;       // 下個出現的方塊形狀
-        private GameData.Type _currentBrickType;    // 當前操作中的方塊形狀
+        private BrickData _currentBrick;            // 當前操作中的方塊資料
+
+        private void DropBrick()
+        {
+            _currentBrick.SetData(spawn_X, spawn_Y, _nextBrickType);
+            _nextBrickType = data.RandomType();
+        }
         #endregion
     }
 }

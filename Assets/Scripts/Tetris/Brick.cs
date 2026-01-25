@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 namespace Puzzle.Tetris
 {
@@ -7,14 +8,43 @@ namespace Puzzle.Tetris
     /// </summary>
     public class Brick : MonoBehaviour
     {
-        void Start()
-        {
+        #region 基礎元件
+        private Image _image;
 
+        private Image image
+        {
+            get
+            {
+                if (_image == null)
+                {
+                    _image = GetComponent<Image>();
+                }
+                return _image;
+            }
+        }
+        #endregion
+
+        public Color orgColor;
+        public Color activeColor;
+
+        /// <summary>
+        /// 初始化
+        /// </summary>
+        /// <param name="name">名稱：座標描述</param>
+        public void Initial(string name)
+        {
+            this.name = name;
+            ClearColor();
         }
 
-        void Update()
+        public void ClearColor()
         {
+            image.color = orgColor;
+        }
 
+        public void ActiveColor()
+        {
+            image.color = activeColor;
         }
     }
 }
