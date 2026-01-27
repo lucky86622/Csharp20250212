@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace Puzzle.Tetris
 {
@@ -35,6 +36,7 @@ namespace Puzzle.Tetris
 
         public int boardWidth;      // 棋盤寬
         public int boardHeight;     // 棋盤高
+        public static Dictionary<Type, Vector2Int>
         #endregion
 
         #region 建構式

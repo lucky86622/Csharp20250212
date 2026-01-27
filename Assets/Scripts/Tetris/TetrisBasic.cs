@@ -20,12 +20,14 @@ namespace Puzzle.Tetris
                 return _data;
             }
         }
-        private int _level              // 經由分數計算出來的遊戲等級
+
+        private const int lv_Range = 1000;  // 級距常數
+        private int _level                  // 經由分數計算出來的遊戲等級
         {
             get
             {
                 // 級距：1000
-                return _score / 1000;
+                return _score / lv_Range;
             }
         }       
         private int _score;             // 遊戲進行成績
@@ -42,7 +44,6 @@ namespace Puzzle.Tetris
         private void Start()
         {
             InitialGame();                  // 初始化遊戲
-            Debug.Log(_nextBrickType);
         }
 
         /// <summary>
@@ -92,10 +93,14 @@ namespace Puzzle.Tetris
         private GameData.Type _nextBrickType;       // 下個出現的方塊形狀
         private BrickData _currentBrick;            // 當前操作中的方塊資料
 
+        /// <summary>
+        /// 方塊下墜
+        /// </summary>
         private void DropBrick()
         {
             _currentBrick.SetData(spawn_X, spawn_Y, _nextBrickType);
             _nextBrickType = data.RandomType();
+            _gameBorad[_currentBrick.x, _currentBrick.y].ActiveColor();
         }
         #endregion
     }

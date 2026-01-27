@@ -37,11 +37,17 @@ namespace Puzzle.Tetris
             ClearColor();
         }
 
+        /// <summary>
+        /// 預設顏色
+        /// </summary>
         public void ClearColor()
         {
             image.color = orgColor;
         }
 
+        /// <summary>
+        /// 啟動顏色
+        /// </summary>
         public void ActiveColor()
         {
             image.color = activeColor;
