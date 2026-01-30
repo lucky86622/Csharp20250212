@@ -1,4 +1,5 @@
-﻿using UnityEngine; // 使用 XXXXX 命名空間
+﻿using System;
+using UnityEngine; // 使用 XXXXX 命名空間
 
 // 命名空間(程式資料夾的概念) 第一層名稱(.的)次一層名稱
 namespace Puzzle.Tetris
@@ -66,6 +67,8 @@ namespace Puzzle.Tetris
                     _gameBorad[x, y] = Instantiate(brickTMP, boardUI);
                     // 為了辨識容易將每個Brick依座標命名
                     _gameBorad[x, y].Initial($"Brick({x}, {y})");
+                    // 委派清除顏色功能到 Action
+                    ClearAllBricks += _gameBorad[x, y].ClearColor;
                 }
             }
         }
@@ -76,7 +79,7 @@ namespace Puzzle.Tetris
         private void FixedUpdate()
         {
             _timeCounter++; // 計算畫面更新
-            if( _timeCounter >= counter_TH)
+            if( _timeCounter >= GameSpeed)
             {
                 _timeCounter = 0;
                 Debug.Log("畫面刷新");
@@ -85,22 +88,76 @@ namespace Puzzle.Tetris
         }
         #endregion
 
+        #region 狀態數據
+        // 判定是否需要產生新的方塊組合
+        private bool SpawnBrick => !_currentBrick.isAlive;
+        // 遊戲速率 (共 10 級)
+        private int GameSpeed => counter_TH - speed * 5;
+        #endregion
+
         #region 遊戲邏輯控制
         private const int spawn_X = 4;              // [常數]方塊出生座標 X
         private const int spawn_Y = 19;             // [常數]方塊出生座標 Y
         private const int counter_TH = 50;          // [常數]更新計數器
+        [Range(0, 9)]                               // [調速]速度等級 ( 倍率：一個單位 5 )
+        public int speed = 0;                       
         private int _timeCounter;                   // 更新計數器
         private GameData.Type _nextBrickType;       // 下個出現的方塊形狀
         private BrickData _currentBrick;            // 當前操作中的方塊資料
+
+        private Action ClearAllBricks;              // 所有的 Brick 的 ClearColor 功能集合
 
         /// <summary>
         /// 方塊下墜
         /// </summary>
         private void DropBrick()
         {
-            _currentBrick.SetData(spawn_X, spawn_Y, _nextBrickType);
-            _nextBrickType = data.RandomType();
-            _gameBorad[_currentBrick.x, _currentBrick.y].ActiveColor();
+            if (SpawnBrick)
+            {
+                // 產生新的方塊組
+                _currentBrick.SetData(spawn_X, spawn_Y, _nextBrickType);
+                _nextBrickType = data.RandomType();
+            }
+            else
+            {
+                // 原方塊組下落
+                _currentBrick.Fall();
+            }
+            ValidCells();
+        }
+
+        /// <summary>
+        /// 可視化棋盤 Cells
+        /// </summary>
+        private void ValidCells()
+        {
+            // 取得對應的方塊 Cells 座標
+            Vector2Int[] cells = GameData.CalCells(_currentBrick);
+            bool valid = true;
+            foreach (Vector2Int cell in cells)
+            {
+                // 1. 左右超界檢查
+                // 2. 觸底檢查
+                if (cell.y < 0)
+                {
+                    valid = false; 
+                    break;
+                }
+            }
+            // 阻止更新
+            if (!valid) return;
+            // 統一清除所有方塊顏色
+            ClearAllBricks();
+            // Foreach　迴圈　( 單一類型 in 該類型的集合 )
+            foreach (Vector2Int cell in cells)
+            {
+                // 計算對應錨點後所有 Cell 實際位置
+                if (cell.y < data.boardHeight)
+                {
+                    // 避免超出的座標被渲染
+                    _gameBorad[cell.x, cell.y].ActiveColor();
+                }
+            }
         }
         #endregion
     }
