@@ -68,7 +68,7 @@ namespace Puzzle.Tetris
                     // 為了辨識容易將每個Brick依座標命名
                     _gameBorad[x, y].Initial($"Brick({x}, {y})");
                     // 委派清除顏色功能到 Action
-                    ClearAllBricks += _gameBorad[x, y].ClearColor;
+                    UpdateBricks += _gameBorad[x, y].UpdateColor;
                 }
             }
         }
@@ -89,8 +89,8 @@ namespace Puzzle.Tetris
         #endregion
 
         #region 狀態數據
-        // 判定是否需要產生新的方塊組合
-        private bool SpawnBrick => !_currentBrick.isAlive;
+        // 當前操作中方塊組合是否存活
+        private bool BrickAlive => _currentBrick.isAlive;
         // 遊戲速率 (共 10 級)
         private int GameSpeed => counter_TH - speed * 5;
         #endregion
@@ -105,14 +105,14 @@ namespace Puzzle.Tetris
         private GameData.Type _nextBrickType;       // 下個出現的方塊形狀
         private BrickData _currentBrick;            // 當前操作中的方塊資料
 
-        private Action ClearAllBricks;              // 所有的 Brick 的 ClearColor 功能集合
+        private Action UpdateBricks;              // 所有的 Brick 的 ClearColor 功能集合
 
         /// <summary>
         /// 方塊下墜
         /// </summary>
         private void DropBrick()
         {
-            if (SpawnBrick)
+            if (!BrickAlive)
             {
                 // 產生新的方塊組
                 _currentBrick.SetData(spawn_X, spawn_Y, _nextBrickType);
@@ -123,6 +123,7 @@ namespace Puzzle.Tetris
                 // 原方塊組下落
                 _currentBrick.Fall();
             }
+            // 視覺更新
             ValidCells();
         }
 
@@ -133,21 +134,30 @@ namespace Puzzle.Tetris
         {
             // 取得對應的方塊 Cells 座標
             Vector2Int[] cells = GameData.CalCells(_currentBrick);
-            bool valid = true;
+            // 先檢查是否有需要更新視覺
             foreach (Vector2Int cell in cells)
             {
                 // 1. 左右超界檢查
                 // 2. 觸底檢查
                 if (cell.y < 0)
                 {
-                    valid = false; 
+                    _currentBrick.Lock(); 
                     break;
                 }
             }
-            // 阻止更新
-            if (!valid) return;
-            // 統一清除所有方塊顏色
-            ClearAllBricks();
+            // 阻止更新：磚塊固定
+            if (!BrickAlive)
+            {
+                foreach (Vector2Int cell in cells)
+                {
+                    if (cell.y < data.boardHeight)
+                    {
+                        _gameBorad[cell.x, cell.y].ChangeState(Brick.State.Occupied);
+                    }
+                }
+            }
+            // 統一更新所有方塊顏色
+            UpdateBricks();
             // Foreach　迴圈　( 單一類型 in 該類型的集合 )
             foreach (Vector2Int cell in cells)
             {
@@ -155,7 +165,7 @@ namespace Puzzle.Tetris
                 if (cell.y < data.boardHeight)
                 {
                     // 避免超出的座標被渲染
-                    _gameBorad[cell.x, cell.y].ActiveColor();
+                    _gameBorad[cell.x, cell.y].UpdateColor();
                 }
             }
         }

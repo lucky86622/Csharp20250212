@@ -5,10 +5,10 @@ namespace Puzzle.Tetris
 {
     public struct BrickData
     {
-        public bool isAlive;        // 
+        public bool isAlive { get; private set; }        // 方塊組是否處於可活動狀態
         public int x;               // 錨點X座標
         public int y;               // 錨點Y座標
-        private Vector2Int _pos;    // 
+        private Vector2Int _pos;    // 錨點座標
         public Vector2Int pos
         {
             get
@@ -17,7 +17,7 @@ namespace Puzzle.Tetris
                 _pos.y = y;
                 return _pos;
             }
-        }
+        }    // 錨點座標公開接口
         public GameData.Type type;  // 形狀類型
 
         /// <summary>
@@ -32,6 +32,14 @@ namespace Puzzle.Tetris
             this.x = x;
             this.y = y;
             this.type = type;
+        }
+
+        /// <summary>
+        /// 產生碰撞鎖定
+        /// </summary>
+        public void Lock()
+        {
+            isAlive = false;
         }
 
         public void Fall()
