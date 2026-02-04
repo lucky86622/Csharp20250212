@@ -97,7 +97,7 @@ namespace Puzzle.Tetris
 
         #region 遊戲邏輯控制
         private const int spawn_X = 4;              // [常數]方塊出生座標 X
-        private const int spawn_Y = 19;             // [常數]方塊出生座標 Y
+        private const int spawn_Y = 20;             // [常數]方塊出生座標 Y
         private const int counter_TH = 50;          // [常數]更新計數器
         [Range(0, 9)]                               // [調速]速度等級 ( 倍率：一個單位 5 )
         public int speed = 0;                       
@@ -118,56 +118,69 @@ namespace Puzzle.Tetris
                 _currentBrick.SetData(spawn_X, spawn_Y, _nextBrickType);
                 _nextBrickType = data.RandomType();
             }
-            else
+            else if (CheckCells(GameData.CalCells(_currentBrick, Vector2Int.down)))
             {
-                // 原方塊組下落
+                // 原方塊組下落：先清除原本位置狀態
+                ClearCells(GameData.CalCells(_currentBrick));
                 _currentBrick.Fall();
             }
             // 視覺更新
-            ValidCells();
+            ValidCells(GameData.CalCells(_currentBrick));
+        }
+
+
+        /// <summary>
+        /// 撞擊確認
+        /// </summary>
+        /// <param name="cells">方塊座標陣列</param>
+        /// <returns是否可以通過</returns>
+        private bool CheckCells(Vector2Int[] cells)
+        {
+            bool pass = true;
+            // 先檢查是否能更新視覺
+            foreach (Vector2Int cell in cells)
+            {
+                if (cell.y >= data.boardHeight) continue;
+                // 0. 左右超界檢查
+                // 1. 觸底檢查 (預判) or 2. 觸碰堆疊
+                if (cell.y < 0 || _gameBorad[cell.x, cell.y].state == Brick.State.Occupied)
+                {
+                    _currentBrick.Lock();
+                    pass = false;
+                    break;
+                }
+            }
+            return pass;
+        }
+
+        /// <summary>
+        /// 清除狀態
+        /// </summary>
+        /// <param name="cells">方塊組座標陣列</param>
+        private void ClearCells(Vector2Int[] cells)
+        {
+            foreach (Vector2Int cell in cells)
+            {
+                // continue：略過超出範圍的 cell
+                if (cell.y >= data.boardHeight) continue;
+                _gameBorad[cell.x, cell.y].ChangeState(Brick.State.None);
+            }
         }
 
         /// <summary>
         /// 可視化棋盤 Cells
         /// </summary>
-        private void ValidCells()
+        private void ValidCells(Vector2Int[] cells)
         {
-            // 取得對應的方塊 Cells 座標
-            Vector2Int[] cells = GameData.CalCells(_currentBrick);
-            // 先檢查是否有需要更新視覺
+            // 更新磚塊狀態
             foreach (Vector2Int cell in cells)
             {
-                // 1. 左右超界檢查
-                // 2. 觸底檢查
-                if (cell.y < 0)
-                {
-                    _currentBrick.Lock(); 
-                    break;
-                }
-            }
-            // 阻止更新：磚塊固定
-            if (!BrickAlive)
-            {
-                foreach (Vector2Int cell in cells)
-                {
-                    if (cell.y < data.boardHeight)
-                    {
-                        _gameBorad[cell.x, cell.y].ChangeState(Brick.State.Occupied);
-                    }
-                }
+                if (cell.y >= data.boardHeight) continue;
+                // 三元運算：if => ?，else => ：
+                _gameBorad[cell.x, cell.y].ChangeState(BrickAlive ? Brick.State.Exist : Brick.State.Occupied);
             }
             // 統一更新所有方塊顏色
             UpdateBricks();
-            // Foreach　迴圈　( 單一類型 in 該類型的集合 )
-            foreach (Vector2Int cell in cells)
-            {
-                // 計算對應錨點後所有 Cell 實際位置
-                if (cell.y < data.boardHeight)
-                {
-                    // 避免超出的座標被渲染
-                    _gameBorad[cell.x, cell.y].UpdateColor();
-                }
-            }
         }
         #endregion
     }
