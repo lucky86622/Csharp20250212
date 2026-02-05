@@ -32,6 +32,7 @@ namespace Puzzle.Tetris
             this.x = x;
             this.y = y;
             this.type = type;
+            GameData.SetCurrentType(type);
         }
 
         /// <summary>
@@ -61,6 +62,44 @@ namespace Puzzle.Tetris
 
         public int boardWidth;      // 棋盤寬
         public int boardHeight;     // 棋盤高
+
+        /// <summary>
+        /// 當前正在操作的方塊組類型
+        /// </summary>
+        public static Type currentType { get; private set; }
+        /// <summary>
+        /// 設定當前操作方塊類型
+        /// </summary>
+        /// <param name="type">方塊類型</param>
+        public static void SetCurrentType(Type type)
+        {
+            currentType = type;
+        } 
+        // 預設顏色
+        public static Color orgColor = Color.gray;
+        // 使用中的方塊顏色
+        public static Color activeColor
+        {
+            get
+            {
+                return ActiveColor(currentType);
+            }
+        }
+        public static Color ActiveColor(Type type)
+        {
+            switch(type)
+            {
+                default:
+                    return orgColor;
+                    case Type.I: return Color.cyan;
+                    case Type.O: return Color.blue;
+                    case Type.T: return Color.blue + Color.red;
+                    case Type.S: return Color.green;
+                    case Type.Z: return Color.red;
+                    case Type.L: return Color.yellow;
+                    case Type.J: return Color.yellow + Color.red;
+            }
+        }
 
         /// <summary>
         /// [字典] 方塊形狀對應座標集合物件本體
