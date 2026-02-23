@@ -43,10 +43,23 @@ namespace Puzzle.Tetris
             isAlive = false;
         }
 
+        /// <summary>
+        /// 下墜 1 個單位
+        /// </summary>
         public void Fall()
         {
             this.y -= 1;
         }
+
+        /// <summary>
+        /// 移動 1 個單位
+        /// </summary>
+        /// <param name="offset">指定方向</param>
+        public void Move(Vector2Int offset)
+        {
+            this.x += offset.x;
+            this.y += offset.y;
+        } 
     }
 
     public class GameData

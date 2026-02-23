@@ -153,6 +153,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   brickTMP: {fileID: 6517763846916486914, guid: b3e8c926c6d64dd4a9b938d571ae58eb, type: 3}
   boardUI: {fileID: 1025009937}
+  speed: 9
 --- !u!114 &77470443
 MonoBehaviour:
   m_ObjectHideFlags: 0
