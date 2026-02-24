@@ -133,7 +133,7 @@ namespace Puzzle.Tetris
         /// 嘗試移動方塊組合
         /// </summary>
         /// <param name="offset">操作的偏移量</param>
-        private void TryMove(Vector2Int offset)
+        private bool TryMove(Vector2Int offset)
         {
             if (CheckCells(GameData.CalCells(_currentBrick, offset)))
             {
@@ -142,7 +142,9 @@ namespace Puzzle.Tetris
                 _currentBrick.Move(offset);
                 // 視覺更新
                 ValidCells(GameData.CalCells(_currentBrick));
+                return true;
             }
+            return false;
         }
 
         /// <summary>
@@ -156,14 +158,16 @@ namespace Puzzle.Tetris
                 _currentBrick.SetData(spawn_X, spawn_Y, _nextBrickType);
                 _nextBrickType = data.RandomType();
             }
-            else if (CheckCells(GameData.CalCells(_currentBrick, Vector2Int.down)))
+            else 
             {
-                // 原方塊組下落：先清除原本位置狀態
-                ClearCells(GameData.CalCells(_currentBrick));
-                _currentBrick.Fall();
+                // 自然下墜
+                if (!TryMove(Vector2Int.down))
+                {
+                    // 下墜失敗：產生撞擊
+                    _currentBrick.Lock();
+                    // 消除檢查 (一排橫連線)
+                }
             }
-            // 視覺更新
-            ValidCells(GameData.CalCells(_currentBrick));
         }
 
 
@@ -174,21 +178,22 @@ namespace Puzzle.Tetris
         /// <returns是否可以通過</returns>
         private bool CheckCells(Vector2Int[] cells)
         {
-            bool pass = true;
             // 先檢查是否能更新視覺
             foreach (Vector2Int cell in cells)
             {
                 if (cell.y >= data.boardHeight) continue;
                 // 0. 左右超界檢查
+                if (cell.x < 0 || cell.x >= data.boardWidth)
+                {
+                    return  false;
+                }
                 // 1. 觸底檢查 (預判) or 2. 觸碰堆疊
                 if (cell.y < 0 || _gameBorad[cell.x, cell.y].state == Brick.State.Occupied)
                 {
-                    _currentBrick.Lock();
-                    pass = false;
-                    break;
+                    return false;
                 }
             }
-            return pass;
+            return true;
         }
 
         /// <summary>
