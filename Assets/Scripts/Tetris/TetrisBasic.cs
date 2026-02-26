@@ -165,6 +165,8 @@ namespace Puzzle.Tetris
                 {
                     // 下墜失敗：產生撞擊
                     _currentBrick.Lock();
+                    // 視覺更新
+                    ValidCells(GameData.CalCells(_currentBrick));
                     // 消除檢查 (一排橫連線)
                 }
             }
