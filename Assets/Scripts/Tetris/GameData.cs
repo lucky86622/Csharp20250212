@@ -60,6 +60,14 @@ namespace Puzzle.Tetris
             this.x += offset.x;
             this.y += offset.y;
         } 
+
+        /// <summary>
+        /// 順時針旋轉 90 度
+        /// </summary>
+        public void Rota()
+        {
+            
+        }
     }
 
     public class GameData

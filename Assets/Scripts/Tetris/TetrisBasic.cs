@@ -114,6 +114,10 @@ namespace Puzzle.Tetris
             }
             // 下降(加速)
             // 旋轉
+            if (Input.GetKeyDown(KeyCode.W))
+            {
+                TryRota();
+            }
         }
         #endregion
 
@@ -128,6 +132,11 @@ namespace Puzzle.Tetris
         private BrickData _currentBrick;            // 當前操作中的方塊資料
 
         private Action UpdateBricks;              // 所有的 Brick 的 ClearColor 功能集合
+
+        private void TryRota()
+        {
+
+        }
 
         /// <summary>
         /// 嘗試移動方塊組合
