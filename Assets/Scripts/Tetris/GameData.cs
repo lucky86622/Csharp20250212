@@ -18,6 +18,9 @@ namespace Puzzle.Tetris
                 return _pos;
             }
         }    // 錨點座標公開接口
+
+        public Vector2Int[] cells;  // 當前操作中的對應座標組
+        private Vector2Int newRota; // [暫存] 重新計算的旋轉位置
         public GameData.Type type;  // 形狀類型
 
         /// <summary>
@@ -32,7 +35,7 @@ namespace Puzzle.Tetris
             this.x = x;
             this.y = y;
             this.type = type;
-            GameData.SetCurrentType(type);
+            this.cells = GameData.CloneCells(type);
         }
 
         /// <summary>
@@ -66,7 +69,14 @@ namespace Puzzle.Tetris
         /// </summary>
         public void Rota()
         {
-            
+            if (type == GameData.Type.O) return;
+            for (int i = 0; i < cells.Length; i++)
+            {
+                // 旋轉公式　(y, -x)
+                newRota.x = cells[i].x;
+                newRota.y = -cells[i].y;
+                cells[i] = newRota;         // 從暫存取代原本
+            }
         }
     }
 
@@ -96,6 +106,15 @@ namespace Puzzle.Tetris
         {
             currentType = type;
         } 
+        /// <summary>
+        /// 複製預設方塊類型資料
+        /// </summary>
+        /// <param name="type">方塊類型</param>
+        /// <returns></returns>
+        public static Vector2Int[] CloneCells(Type type)
+        {
+            return cells[type].Clone() as Vector2Int[];
+        }
         // 預設顏色
         public static Color orgColor = Color.gray;
         // 使用中的方塊顏色
