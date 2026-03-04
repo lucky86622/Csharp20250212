@@ -42,6 +42,8 @@ namespace Puzzle.Tetris
         #endregion
 
         #region 狀態數據
+        // 操作中的方塊組座標
+        private Vector2Int[] Cells => _currentBrick.cells;
         // 當前操作中方塊組合是否存活
         private bool BrickAlive => _currentBrick.isAlive;
         // 遊戲速率 (共 10 級)
@@ -133,9 +135,15 @@ namespace Puzzle.Tetris
 
         private Action UpdateBricks;              // 所有的 Brick 的 ClearColor 功能集合
 
+        /// <summary>
+        /// 旋轉功能
+        /// </summary>
         private void TryRota()
         {
-
+            ClearCells(Cells);
+            _currentBrick.Rota();
+            // 視覺更新
+            ValidCells(Cells);
         }
 
         /// <summary>
@@ -147,10 +155,10 @@ namespace Puzzle.Tetris
             if (CheckCells(GameData.CalCells(_currentBrick, offset)))
             {
                 // 原方塊組移動：先清除原本位置狀態
-                ClearCells(GameData.CalCells(_currentBrick));
+                ClearCells(Cells);
                 _currentBrick.Move(offset);
                 // 視覺更新
-                ValidCells(GameData.CalCells(_currentBrick));
+                ValidCells(Cells);
                 return true;
             }
             return false;

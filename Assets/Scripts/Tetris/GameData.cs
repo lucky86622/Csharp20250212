@@ -19,9 +19,9 @@ namespace Puzzle.Tetris
             }
         }    // 錨點座標公開接口
 
-        public Vector2Int[] cells;  // 當前操作中的對應座標組
-        private Vector2Int newRota; // [暫存] 重新計算的旋轉位置
-        public GameData.Type type;  // 形狀類型
+        public Vector2Int[] cells { get; private set; }     // 當前操作中的對應座標組
+        private Vector2Int newRota;                         // [暫存] 重新計算的旋轉位置
+        public GameData.Type type;                          // 形狀類型
 
         /// <summary>
         /// 設定初始狀態
